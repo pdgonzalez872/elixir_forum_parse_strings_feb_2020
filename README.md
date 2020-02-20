@@ -1,4 +1,8 @@
-# Feb20
+## ElixirForum Question - https://elixirforum.com/t/parse-this-string/29252 
+
+Relevant files here are:
+- `lib/benchmark.exs`
+- `test/feb20_test.exs`
 
 I started to benchmark this yesterday and was interested in how different a
 reduce vs for comprehension vs filter + map approach would be.
