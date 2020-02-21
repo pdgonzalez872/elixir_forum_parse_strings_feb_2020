@@ -181,7 +181,7 @@ defmodule TrarbrNimble do
 
   # Example: 4d0ff57e-4022-4bfd-8689-a69e39f80f69
 
-  uuid = ascii_string([?0..?9, ?a..?z, ?-], min: 1)
+  uuid = ascii_string([], 36)
 
   # Example: 2020-02-19T17:32:52.353Z
 
