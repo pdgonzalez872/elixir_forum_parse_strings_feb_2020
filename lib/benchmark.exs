@@ -181,11 +181,26 @@ defmodule TrarbrNimble do
 
   # Example: 4d0ff57e-4022-4bfd-8689-a69e39f80f69
 
-  uuid = ascii_string([?0..?9, ?a..?z, ?-], min: 1)
+  uuid = ascii_string([], 36)
 
   # Example: 2020-02-19T17:32:52.353Z
 
-  timestamp = ascii_string([?0..?9, ?-, ?:, ?., ?T, ?Z], 24)
+  timestamp =
+    ascii_string([], 4)
+    |> string("-")
+    |> ascii_string([], 2)
+    |> string("-")
+    |> ascii_string([], 2)
+    |> string("T")
+    |> ascii_string([], 2)
+    |> string(":")
+    |> ascii_string([], 2)
+    |> string(":")
+    |> ascii_string([], 2)
+    |> string(".")
+    |> ascii_string([], 3)
+    |> string("Z")
+    |> reduce({:erlang, :iolist_to_binary, []})
 
   # Example: START RequestId: 4d0ff57e-4022-4bfd-8689-a69e39f80f69 Version: $LATEST\n
 
@@ -215,6 +230,9 @@ defmodule TrarbrNimble do
     |> repeat()
     |> reduce({Enum, :join, ["\n"]})
 
+  # Example: INFO
+  severity = choice([string("INFO"), string("WARN")])
+
   # Example: 2020-02-19T17:32:52.353Z\t4d0ff57e-4022-4bfd-8689-a69e39f80f69\tINFO\tGetting metadata\n
 
   logline =
@@ -222,7 +240,7 @@ defmodule TrarbrNimble do
     |> ignore(string("\t"))
     |> concat(ignore(uuid))
     |> ignore(string("\t"))
-    |> ascii_string([?A..?Z], min: 1)
+    |> concat(severity)
     |> ignore(string("\t"))
     |> concat(message)
     |> reduce({:to_logline, []})
